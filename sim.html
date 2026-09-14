@@ -223,9 +223,13 @@ button{font-family:inherit;-webkit-tap-highlight-color:transparent}
 
 .pin{cursor:pointer;white-space:nowrap;user-select:none;line-height:0}
 /* Метки на карте нарисованы в 20 px, а палец попадает примерно в 40.
-   Невидимая площадка вокруг каждой метки ловит промах, не меняя рисунка. */
+   Невидимая площадка вокруг каждой метки ловит промах, не меняя рисунка.
+   position здесь не трогаем: маркеру его ставит сама MapLibre (absolute,
+   и двигает потом transform'ом). Стоит перебить на relative — маркер
+   уходит в обычный поток, основание у каждого следующего съезжает на
+   высоту предыдущих, и метки встают мимо своих мест. Absolute сам по себе
+   держит площадку, никакой relative для неё не нужен. */
 @media (pointer:coarse){
-  .pin,.fork,.port,.dest{position:relative}
   .pin::after,.fork::after,.port::after,.dest::after{content:"";position:absolute;
     left:50%;top:50%;width:var(--tap);height:var(--tap);transform:translate(-50%,-50%)}
 }
